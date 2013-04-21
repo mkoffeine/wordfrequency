@@ -28,7 +28,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\utils\.idea\uiDesigner.xml" afterPath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\utils\.idea\uiDesigner.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WordFreq.iws" />
@@ -43,9 +42,8 @@
     <file path="/WordInfo.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366042254764" ignored="false" />
     <file path="/a.dummy" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366039008788" ignored="false" />
     <file path="$PROJECT_DIR$/../TestApp/src/TestApp.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366041145451" ignored="false" />
-    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576555593" ignored="false" />
+    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576768802" ignored="false" />
     <file path="/vcs.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576570554" ignored="false" />
-    <file path="$PROJECT_DIR$/../utils/.idea/workspace.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576605230" ignored="false" />
     <file path="$PROJECT_DIR$/../utils/.idea/vcs.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576575347" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

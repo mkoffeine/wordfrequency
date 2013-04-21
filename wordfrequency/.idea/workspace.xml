@@ -28,14 +28,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" name="Default" comment="">
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\compiler.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\copyright\profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\scopes\scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\uiDesigner.xml" afterPath="" />
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\workspace.xml" afterPath="" />
     </list>
     <ignored path="WordFreq.iws" />
@@ -50,7 +42,7 @@
     <file path="/WordInfo.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366042254764" ignored="false" />
     <file path="/a.dummy" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366039008788" ignored="false" />
     <file path="$PROJECT_DIR$/../TestApp/src/TestApp.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366041145451" ignored="false" />
-    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576434576" ignored="false" />
+    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576496570" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,6 +274,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WordFreq" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wordfrequency" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -506,7 +512,11 @@
       <created>1366576437277</created>
       <updated>1366576437277</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="remove .idea">
+      <created>1366576501456</created>
+      <updated>1366576501456</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">

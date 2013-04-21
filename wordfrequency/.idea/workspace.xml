@@ -28,7 +28,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" name="Default" comment="">
-      <change type="DELETED" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\wordfrequency\.idea\workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\utils\.idea\uiDesigner.xml" afterPath="X:\_Myhaylo\idea12\WordFreq\wordfrequency\wordfrequency\utils\.idea\uiDesigner.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WordFreq.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,7 +43,10 @@
     <file path="/WordInfo.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366042254764" ignored="false" />
     <file path="/a.dummy" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366039008788" ignored="false" />
     <file path="$PROJECT_DIR$/../TestApp/src/TestApp.java" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366041145451" ignored="false" />
-    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576496570" ignored="false" />
+    <file path="/Dummy.txt" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576555593" ignored="false" />
+    <file path="/vcs.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576570554" ignored="false" />
+    <file path="$PROJECT_DIR$/../utils/.idea/workspace.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576605230" ignored="false" />
+    <file path="$PROJECT_DIR$/../utils/.idea/vcs.xml" changelist="1f524ee9-33ae-40b2-84e3-8450f0f5ffae" time="1366576575347" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,14 +122,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WordFreqActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="WordFreqActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/koffeine/wordfreq/WordFreqActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="17" selection-start="2762" selection-end="2762" vertical-scroll-proportion="0.7308411">
+            <state line="75" column="17" selection-start="2762" selection-end="2762" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1846#1856#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="profiles_settings.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -285,6 +298,42 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WordFreq" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wordfrequency" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scopes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WordFreq" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wordfrequency" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="copyright" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -516,14 +565,18 @@
       <created>1366576501456</created>
       <updated>1366576501456</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="remove .idea">
+      <created>1366576531493</created>
+      <updated>1366576531493</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="3" y="0" width="1278" height="994" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32814372" sideWeight="0.5041118" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32814372" sideWeight="0.5041118" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -542,7 +595,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24917763" sideWeight="0.6718563" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24917763" sideWeight="0.6718563" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934132" sideWeight="0.99909586" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30253476" sideWeight="0.6706302" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32951757" sideWeight="0.6004756" order="3" side_tool="true" content_ui="tabs" />
@@ -622,13 +675,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/koffeine/wordfreq/FileSortAndAdjust.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="26" selection-start="2261" selection-end="2261" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/koffeine/wordfreq/WordFreqActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="55" column="27" selection-start="1777" selection-end="1777" vertical-scroll-proportion="0.0">
@@ -729,11 +775,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/koffeine/wordfreq/WordFreqActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="17" selection-start="2762" selection-end="2762" vertical-scroll-proportion="0.7308411">
+        <state line="75" column="17" selection-start="2762" selection-end="2762" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1846#1856#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>

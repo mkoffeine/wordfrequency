@@ -91,7 +91,7 @@ public class WordFreqActivity extends Activity {
         String s = inText.getText().toString();
         Log.d("123123", "123123 onTextChanged " + s);
         String status = "";
-        if (s.length() > 2 && wordsArray != null && wordsArray.length > 0) {
+        if (s.length() > 1 && wordsArray != null && wordsArray.length > 0) {
             int index = Arrays.binarySearch(wordsArray, new WordInfo(s, 0, 0));
             index = index > -1 ? index : -index - 1;
             if (index > -1 && index < wordsArray.length) {
@@ -149,6 +149,7 @@ public class WordFreqActivity extends Activity {
 
         public void onClick(View view) {
             inText.setText("");
+            inText.requestFocus();
         }
     }
 }

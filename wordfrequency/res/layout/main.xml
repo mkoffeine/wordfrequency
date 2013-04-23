@@ -9,24 +9,31 @@
 			android:layout_height="wrap_content"
 			android:text="Type word"
 			android:editable="true"/>
-	<EditText
-			android:layout_width="320dp"
-			android:layout_height="wrap_content"
-			android:id="@+id/editTextInput" android:layout_gravity="center_vertical|left" android:focusable="true"
-			android:editable="true"/>
-	<Button
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Clear"
-			android:id="@+id/button_clear" android:layout_gravity="left|center_vertical"/>
-	<Button
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Copy To Buffer"
-			android:id="@+id/button_copy" android:layout_gravity="center"/>
+
 	<EditText
 			android:layout_width="fill_parent"
-			android:layout_height="400dp"
-			android:id="@+id/editTextResult" android:layout_gravity="left|center_vertical" android:editable="false"/>
+			android:layout_height="wrap_content"
+			android:id="@+id/editTextInput" android:layout_gravity="center_vertical|left" android:focusable="true"
+			android:editable="true" android:singleLine="true"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="horizontal"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" android:gravity="center">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear"
+                android:id="@+id/button_clear" android:layout_gravity="left|center_vertical"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Copy To Buffer"
+                android:id="@+id/button_copy" android:layout_gravity="center" android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+	<EditText
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:id="@+id/editTextResult" android:gravity="top|left" android:editable="false"/>
 </LinearLayout>
 

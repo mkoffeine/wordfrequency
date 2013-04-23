@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class FileSortAndAdjust {
     static int MIN_FREQ = 0;
     static int MAX_FREQ_WHEN_SPEC_SYMBOLS_IS_ALLOWED = 3;
-    static int[] LIST_OF_FREQS = new int[]{700, 200, 120, 100, 80, 50, 30, 20, 10, 5, 1, 0};
+    static int[] LIST_OF_FREQS = new int[]{700, 200, 120, 100, 80, 50, 30, 20, 10, 5, 4, 3, 2, 1, 0};
 
     public static void main(String[] args) throws Exception {
         //income file:  X:\_Myhaylo\idea12\en_full-rawEd.dic    (213272)
@@ -70,7 +70,7 @@ public class FileSortAndAdjust {
 
     public static boolean isCorrectWord(String s, String filter) {
         boolean correct = false;
-        if (s.length() > 2 &&
+        if (s.length() > 1 &&
                 s.charAt(0) >= 'a' && s.charAt(0) <= 'z' &&
                 s.charAt(1) >= 'a' && s.charAt(1) <= 'z') {
             correct = true;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,18 +32,10 @@ public class WordFreqActivity extends Activity {
         inText = (EditText) findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
         outText = (EditText) findViewById(R.id.editTextResult);
-        try {
-            long time = System.currentTimeMillis();
-            model = new WordsModel();
-            long delta = System.currentTimeMillis() - time;
-            Toast toast = Toast.makeText(getApplicationContext(), "initLogic done. Delta: " + delta, Toast.LENGTH_LONG);
-            toast.show();
-            logger.debug("initLogic done. Delta: " + delta);
-        } catch (IOException e) {
-            Toast toast = Toast.makeText(getApplicationContext(), "IOException during initLogic()", Toast.LENGTH_LONG);
-            toast.show();
-            logger.debug(e.toString());
-        }
+        new DownloadDataTask().execute();
+        logger.debug("Model: " + model);
+
+
         Button btnClipboard = (Button) findViewById(R.id.button_copy);
         btnClipboard.setOnClickListener(new ButtonBufferClick());
         Button btnClear = (Button) findViewById(R.id.button_clear);
@@ -53,8 +46,11 @@ public class WordFreqActivity extends Activity {
 
     private void updateStatus() {
         String s = inText.getText().toString();
-        Log.d("123123", "123123 onTextChanged " + s);
-        String status = model.getStatus(s);
+        logger.debug("onTextChanged " + s);
+        String status = "";
+        if (model != null) {
+            status = model.getStatus(s);
+        }
         outText.setText(status);
     }
 
@@ -91,6 +87,24 @@ public class WordFreqActivity extends Activity {
         public void onClick(View view) {
             inText.setText("");
             inText.requestFocus();
+        }
+    }
+    private class DownloadDataTask extends AsyncTask<String, Void, WordsModel> {
+
+        @Override
+        protected WordsModel doInBackground(String... strings) {
+            WordsModel wordsModel = new WordsModel();
+            wordsModel.initLogic();
+            return wordsModel;
+        }
+
+        @Override
+        protected void onPostExecute(WordsModel wordsModel) {
+            model = wordsModel;
+            updateStatus();
+            String message = "onPostExecute. model is ready";
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

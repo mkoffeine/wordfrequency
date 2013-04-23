@@ -14,14 +14,19 @@ public class WordsModel {
     private Logger logger = Logger.getLogger(WordsModel.class.getSimpleName());
     private WordInfo[] wordsArray;
 
-    public WordsModel()  throws IOException{
-        initLogic();
-    }
 
-    public void initLogic() throws IOException {
+    public void initLogic() {
+        try {
+            readData();
+        }
+        catch (IOException e) {
+            throw new IllegalStateException("WordsModel caught IOException");
+        }
+    }
+    private void readData() throws IOException {
 
         File sdCard = Environment.getExternalStorageDirectory();
-        String dictionaryFile = "en_full_raw_4.dic";
+        String dictionaryFile = "en_full_raw_2.dic";
         File file = new File(sdCard, "Android/data/com.koffeine.wordfreq/" + dictionaryFile);
 
         BufferedReader br = new BufferedReader(new FileReader(file));

@@ -18,7 +18,6 @@ public class WordFreqActivity extends Activity {
     private EditText inText;
     private EditText outText;
     private Logger logger = Logger.getLogger(WordFreqActivity.class.getSimpleName());
-    static WordsModel model;
 
     /**
      * Called when the activity is first created.
@@ -30,10 +29,10 @@ public class WordFreqActivity extends Activity {
         inText = (EditText) findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
         outText = (EditText) findViewById(R.id.editTextResult);
-        if (model == null) {
+        if (getWordsModel() == null) {
             new DownloadDataTask().execute();
         }
-        logger.debug("Model: " + model);
+        logger.debug("Model: " + getWordsModel());
 
 
         Button btnClipboard = (Button) findViewById(R.id.button_copy);
@@ -43,13 +42,26 @@ public class WordFreqActivity extends Activity {
 
     }
 
+    @Override
+    protected void onStop() {
+        logger.debug("onStop ");
+        logger = null;
+        inText = null;
+        outText = null;
+        super.onStop();
+    }
+
+    private WordsModel getWordsModel() {
+        return ((WordsFreqApplication) getApplicationContext()).getWordsModel();
+    }
+
 
     private void updateStatus() {
         String s = inText.getText().toString();
         logger.debug("onTextChanged " + s);
         String status = "";
-        if (model != null) {
-            status = model.getStatus(s);
+        if (getWordsModel() != null) {
+            status = getWordsModel().getStatus(s);
         }
         outText.setText(status);
     }
@@ -89,6 +101,7 @@ public class WordFreqActivity extends Activity {
             inText.requestFocus();
         }
     }
+
     private class DownloadDataTask extends AsyncTask<String, Void, WordsModel> {
 
         @Override
@@ -100,7 +113,7 @@ public class WordFreqActivity extends Activity {
 
         @Override
         protected void onPostExecute(WordsModel wordsModel) {
-            model = wordsModel;
+            ((WordsFreqApplication) getApplicationContext()).setWordsModel(wordsModel);
             updateStatus();
             String message = "onPostExecute. model is ready";
             Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);

@@ -1,4 +1,4 @@
-package com.koffeine.wordfreq;
+package com.koffeine.wordfrequency;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -8,19 +8,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
 
 public class WordFreqActivity extends Activity {
     private EditText inText;
     private EditText outText;
     private Logger logger = Logger.getLogger(WordFreqActivity.class.getSimpleName());
-    WordsModel model;
+    static WordsModel model;
 
     /**
      * Called when the activity is first created.
@@ -32,7 +30,9 @@ public class WordFreqActivity extends Activity {
         inText = (EditText) findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
         outText = (EditText) findViewById(R.id.editTextResult);
-        new DownloadDataTask().execute();
+        if (model == null) {
+            new DownloadDataTask().execute();
+        }
         logger.debug("Model: " + model);
 
 

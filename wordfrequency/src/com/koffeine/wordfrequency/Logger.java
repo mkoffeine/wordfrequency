@@ -1,4 +1,4 @@
-package com.koffeine.wordfreq;
+package com.koffeine.wordfrequency;
 
 import android.util.Log;
 

@@ -1,6 +1,4 @@
-package com.koffeine.wordfreq;
-
-import java.util.Comparator;
+package com.koffeine.wordfrequency;
 
 public class WordInfo implements Comparable<WordInfo> {
     private String word;

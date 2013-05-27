@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 public class WordFreqActivity extends Activity {
+    private String id = "";//Double.toString(Math.random());//"";
     private EditText inText;
     private EditText outText;
     private Logger logger = Logger.getLogger(WordFreqActivity.class.getSimpleName());
@@ -25,7 +26,13 @@ public class WordFreqActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logger.debug("onsCreate");
         setContentView(R.layout.main);
+    }
+
+    @Override
+    protected void onStart() {
+        logger.debug("onStart " + id);
         inText = (EditText) findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
         outText = (EditText) findViewById(R.id.editTextResult);
@@ -39,16 +46,24 @@ public class WordFreqActivity extends Activity {
         btnClipboard.setOnClickListener(new ButtonBufferClick());
         Button btnClear = (Button) findViewById(R.id.button_clear);
         btnClear.setOnClickListener(new ButtonClearClick());
-
+        super.onStart();
     }
 
     @Override
     protected void onStop() {
-        logger.debug("onStop ");
-        logger = null;
+        inText.setOnClickListener(null);
         inText = null;
+        outText.setOnClickListener(null);
         outText = null;
+        logger.debug("onStop " + id);
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        logger.debug("onDestroy " + id);
+        logger = null;
+        super.onDestroy();
     }
 
     private WordsModel getWordsModel() {

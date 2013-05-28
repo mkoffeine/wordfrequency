@@ -1,5 +1,6 @@
 package com.koffeine.wordfrequency;
 
+import android.os.Build;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -26,7 +27,7 @@ public class WordsModel {
     private void readData() throws IOException {
 
         File sdCard = Environment.getExternalStorageDirectory();
-        String dictionaryFile = "en_full_raw_2.dic";
+        String dictionaryFile = Build.VERSION.SDK_INT < 11 ? "en_full_raw_10.dic" : "en_full_raw_2.dic";
         File file = new File(sdCard, "Android/data/com.koffeine.wordfreq/" + dictionaryFile);
 
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -60,7 +61,7 @@ public class WordsModel {
             index = index > -1 ? index : -index - 1;
             if (index > -1 && index < wordsArray.length) {
                 WordInfo info = wordsArray[index];
-                status = "words:   " + info.toString() + "\n\n";
+                status = "w:  " + info.toString() + "\n\n";
                 String[] suffixes = {"s", "ing", "es", "ly", "er", "ar", "ir", "y", "able", "e",
                         "t", "ed", "en", "ist", "ful", "fy", "ian", "ize", "ible",
                         "ness", "less", "ism", "hood", "ment"
@@ -71,7 +72,7 @@ public class WordsModel {
                     String word = typedWord + suffix;
                     index = Arrays.binarySearch(wordsArray, new WordInfo(word, 0, 0));
                     if (index > 0 && index < wordsArray.length) {
-                        status += "   " + wordsArray[index].toString() + "\n";
+                        status += "  " + wordsArray[index].toString() + "\n";
                     } else {
                         //status += "   --no-- " + word + "\n";
                     }

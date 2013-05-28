@@ -32,7 +32,7 @@ public class WordInfo implements Comparable<WordInfo> {
 
     @Override
     public String toString() {
-        return word + "     pos: " + position + "    freq: " + freq;
+        return word + " pos: " + position + "  freq: " + freq;
     }
 
     @Override

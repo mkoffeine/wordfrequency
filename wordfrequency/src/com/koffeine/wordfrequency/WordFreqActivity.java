@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -76,7 +77,7 @@ public class WordFreqActivity extends Activity {
         logger.debug("onTextChanged " + s);
         String status = "";
         if (getWordsModel() != null) {
-            status = getWordsModel().getStatus(s);
+            status = getWordsModel().getStatus(s.toLowerCase());
         }
         outText.setText(status);
     }
@@ -101,11 +102,33 @@ public class WordFreqActivity extends Activity {
     private class ButtonBufferClick implements View.OnClickListener {
 
         public void onClick(View view) {
-            ClipboardManager clipboard = (ClipboardManager)
+            if (Build.VERSION.SDK_INT < 11) {
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
+                        getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setText(inText.getText().toString());
+            } else {
+                ClipboardManager clipboard = (ClipboardManager)
+                        getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", inText.getText().toString());
+                clipboard.setPrimaryClip(clip);
+            }
+        }
+    }
+    public void onPastClick(View view) {
+        if (Build.VERSION.SDK_INT < 11) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
                     getSystemService(Context.CLIPBOARD_SERVICE);
-
-            ClipData clip = ClipData.newPlainText("", inText.getText().toString());
-            clipboard.setPrimaryClip(clip);
+            inText.setText(clipboard.getText());
+        }
+        else {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData primaryClip = clipboard.getPrimaryClip();
+            if (primaryClip != null && primaryClip.getItemCount() > 0) {
+                ClipData.Item item = primaryClip.getItemAt(0);
+                if (item != null) {
+                    inText.setText(item.getText());
+                }
+            }
         }
     }
 

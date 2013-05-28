@@ -29,6 +29,12 @@
                 android:layout_height="wrap_content"
                 android:text="Copy To Buffer"
                 android:id="@+id/button_copy" android:layout_gravity="center" android:layout_marginLeft="20dp"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Past"
+                android:onClick="onPastClick"
+                android:id="@+id/button_past" android:layout_gravity="center" android:layout_marginLeft="20dp"/>
 
     </LinearLayout>
 	<EditText

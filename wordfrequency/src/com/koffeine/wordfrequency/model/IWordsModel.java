@@ -11,7 +11,7 @@ public interface IWordsModel {
             "ness", "less", "ism", "hood", "ment"
             , "al", "ent", "nt", "sm", "m", "st", "an"
             , "ss", "ng", "n", "ble", "le", "r", "l"
-            , "t", "ul", "sm", "n", "ood", "od", "d"};
+            , "ul", "sm", "ood", "od", "d"};
 
     void initLogic(Context context);
     String getStatus(String typedWord);

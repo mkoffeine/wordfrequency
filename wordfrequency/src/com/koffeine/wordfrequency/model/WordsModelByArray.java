@@ -7,6 +7,8 @@ import com.koffeine.wordfrequency.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 
 
 class WordsModelByArray extends AbstractWordsModel{
@@ -42,14 +44,19 @@ class WordsModelByArray extends AbstractWordsModel{
             if (index > -1 && index < wordsArray.length) {
                 WordInfo info = wordsArray[index];
                 status = "w:  " + info.toString() + "\n\n";
+                LinkedList<WordInfo> listInfo = new LinkedList<WordInfo>();
                 for (String suffix : SUFFIXES) {
                     String word = typedWord + suffix;
                     index = Arrays.binarySearch(wordsArray, new WordInfo(word, 0, 0));
                     if (index > 0 && index < wordsArray.length) {
-                        status += "  " + wordsArray[index].toString() + "\n";
+                        listInfo.add(wordsArray[index]);
                     } else {
                         //status += "   --no-- " + word + "\n";
                     }
+                }
+                Collections.sort(listInfo, new WordInfo.FreqDescComparator());
+                for(WordInfo wi : listInfo) {
+                    status += "  " + wi.toString() + "\n";
                 }
             }
         }

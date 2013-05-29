@@ -1,5 +1,7 @@
 package com.koffeine.wordfrequency.model;
 
+import java.util.Comparator;
+
 public class WordInfo implements Comparable<WordInfo> {
     private String word;
     private int position;
@@ -50,5 +52,11 @@ public class WordInfo implements Comparable<WordInfo> {
     @Override
     public int hashCode() {
         return word.hashCode();
+    }
+    public static class FreqDescComparator implements Comparator<WordInfo> {
+        @Override
+        public int compare(WordInfo lhs, WordInfo rhs) {
+            return rhs.getFreq() - lhs.getFreq();
+        }
     }
 }

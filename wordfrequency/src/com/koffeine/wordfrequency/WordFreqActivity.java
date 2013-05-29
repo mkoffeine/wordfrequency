@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.koffeine.wordfrequency.model.IWordsModel;
+import com.koffeine.wordfrequency.model.WordsModelFactory;
 
 
 public class WordFreqActivity extends Activity {
@@ -67,7 +69,7 @@ public class WordFreqActivity extends Activity {
         super.onDestroy();
     }
 
-    private WordsModel getWordsModel() {
+    private IWordsModel getWordsModel() {
         return ((WordsFreqApplication) getApplicationContext()).getWordsModel();
     }
 
@@ -77,7 +79,7 @@ public class WordFreqActivity extends Activity {
         logger.debug("onTextChanged " + s);
         String status = "";
         if (getWordsModel() != null) {
-            status = getWordsModel().getStatus(s.toLowerCase());
+            status = getWordsModel().getStatus(s.toLowerCase().trim());
         }
         outText.setText(status);
     }
@@ -140,17 +142,17 @@ public class WordFreqActivity extends Activity {
         }
     }
 
-    private class DownloadDataTask extends AsyncTask<String, Void, WordsModel> {
+    private class DownloadDataTask extends AsyncTask<String, Void, IWordsModel> {
 
         @Override
-        protected WordsModel doInBackground(String... strings) {
-            WordsModel wordsModel = new WordsModel();
-            wordsModel.initLogic();
+        protected IWordsModel doInBackground(String... strings) {
+            IWordsModel wordsModel = new WordsModelFactory().createWordsModel();
+            wordsModel.initLogic(getApplicationContext());
             return wordsModel;
         }
 
         @Override
-        protected void onPostExecute(WordsModel wordsModel) {
+        protected void onPostExecute(IWordsModel wordsModel) {
             ((WordsFreqApplication) getApplicationContext()).setWordsModel(wordsModel);
             updateStatus();
             String message = "onPostExecute. model is ready";

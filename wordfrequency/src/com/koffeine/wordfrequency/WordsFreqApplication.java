@@ -1,16 +1,29 @@
 package com.koffeine.wordfrequency;
 
 import android.app.Application;
+import com.koffeine.wordfrequency.model.IWordsModel;
+import com.koffeine.wordfrequency.model.dbsqlite.SQLHolder;
 
 
 public class WordsFreqApplication extends Application {
-    private WordsModel wordsModel;
+    private IWordsModel wordsModel;
+    private SQLHolder sqlHolder;
 
-    public WordsModel getWordsModel() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sqlHolder = new SQLHolder(getApplicationContext());
+    }
+
+    public SQLHolder getSqlHolder() {
+        return sqlHolder;
+    }
+
+    public IWordsModel getWordsModel() {
         return wordsModel;
     }
 
-    public void setWordsModel(WordsModel wordsModel) {
+    public void setWordsModel(IWordsModel wordsModel) {
         this.wordsModel = wordsModel;
     }
 }

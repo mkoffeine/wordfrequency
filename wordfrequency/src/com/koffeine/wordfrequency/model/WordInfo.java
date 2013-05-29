@@ -1,4 +1,4 @@
-package com.koffeine.wordfrequency;
+package com.koffeine.wordfrequency.model;
 
 public class WordInfo implements Comparable<WordInfo> {
     private String word;

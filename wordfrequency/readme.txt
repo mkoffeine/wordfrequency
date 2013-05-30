@@ -1,0 +1,1 @@
+android create test-project -m "x:/_Myhaylo/idea12/WordFreq/wordfrequency/wordfrequency/wordfrequency" -n wordfrequency -p ../wordfrequency/test

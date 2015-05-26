@@ -1,0 +1,1 @@
+You type word and get how often it frequent and forms of word (for instance word, words...).

@@ -5,17 +5,14 @@
     android:layout_height="match_parent"
     android:baselineAligned="false">
 
-
-    <fragment
-        android:name="com.koffeine.wordfrequency2.fragment.MainFragment"
-        android:id="@+id/main_fragment"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_fragment_cont"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_width="0dp" />
 
-    <fragment
-        android:name="com.koffeine.wordfrequency2.fragment.WordsListFragment"
-        android:id="@+id/list_fragment"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_fragment_cont"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_width="0dp" />

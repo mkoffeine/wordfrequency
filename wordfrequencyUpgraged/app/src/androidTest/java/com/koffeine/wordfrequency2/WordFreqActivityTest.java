@@ -22,7 +22,7 @@ public class WordFreqActivityTest extends ActivityInstrumentationTestCase2<WordF
     private EditText etInput;
     private EditText etResult;
     public WordFreqActivityTest() {
-        super("com.koffeine.wordfrequency", WordFreqActivity.class);
+        super("com.koffeine.wordfrequency2", WordFreqActivity.class);
     }
 
     @Override

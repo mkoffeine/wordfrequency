@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_fragment2"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -8,38 +9,43 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:editable="true"
         android:text="Type word" />
-
-    <EditText
-        android:id="@+id/editTextInput"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|left"
-        android:editable="true"
-        android:focusable="true"
-        android:singleLine="true" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/editTextInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:singleLine="true"
+            android:layout_weight="4" />
 
         <Button
             android:id="@+id/button_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:text="Clear" />
+            android:text="X"
+            android:layout_weight="0" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:text="Copy To Buffer" />
+            android:text="Copy" />
 
         <Button
             android:id="@+id/button_past"
@@ -47,15 +53,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:onClick="onPastClick"
             android:text="Past" />
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Add" />
+
 
     </LinearLayout>
 
-    <EditText
+    <TextView
         android:id="@+id/editTextResult"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:editable="false"
         android:gravity="top|left" />
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,36 +15,62 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
-import com.koffeine.wordfrequency2.model.WordsModelFactory;
+import com.koffeine.wordfrequency2.model.WordsModelByArray;
+import com.koffeine.wordfrequency2.model.dbsqlite.WordSQLHolder;
 
+import java.util.List;
 
 
 public class MainFragment extends Fragment {
     private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
     private String id = "";//Double.toString(Math.random());//"";
     private EditText inText;
-    private EditText outText;
+    private TextView outText;
+    private String TEXT = "text";
+    private DownloadDataTask downloadDataTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_main, container, false);
+        inText = (EditText) getActivity().findViewById(R.id.editTextInput);
+        if (savedInstanceState != null) {
+            String text = savedInstanceState.getString(TEXT);
+
+            if (text != null && inText != null) {
+                inText.setText(text);
+            }
+        }
+        return inflate;
     }
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        inText = (EditText) getActivity().findViewById(R.id.editTextInput);
+        super.onSaveInstanceState(outState);
+        if (outState != null && inText != null) {
+            outState.putString(TEXT, inText.getText().toString());
+        }
+        logger.debug("123123 main fragment onSaveInstanceState " + outState);
+    }
+
+    @Override
     public void onStart() {
+        super.onStart();
         logger.debug("onStart " + id);
         inText = (EditText) getActivity().findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
-        outText = (EditText) getActivity().findViewById(R.id.editTextResult);
+        outText = (TextView) getActivity().findViewById(R.id.editTextResult);
         if (getWordsModel() == null) {
-            new DownloadDataTask().execute();
+            downloadDataTask = new DownloadDataTask();
+            downloadDataTask.execute();
         }
         logger.debug("Model: " + getWordsModel());
 
@@ -52,13 +79,15 @@ public class MainFragment extends Fragment {
         btnClipboard.setOnClickListener(new ButtonBufferClick());
         Button btnClear = (Button) getActivity().findViewById(R.id.button_clear);
         btnClear.setOnClickListener(new ButtonClearClick());
-        super.onStart();
+        Button btnPast = (Button) getActivity().findViewById(R.id.button_past);
+        btnPast.setOnClickListener(new ButtonPastClick());
+        Button btnAdd = (Button) getActivity().findViewById(R.id.button_add);
+        btnAdd.setOnClickListener(new ButtonAddClick());
     }
 
     @Override
     public void onStop() {
         inText.setOnClickListener(null);
-        inText = null;
         outText.setOnClickListener(null);
         outText = null;
         logger.debug("onStop " + id);
@@ -69,6 +98,9 @@ public class MainFragment extends Fragment {
     public void onDestroy() {
         logger.debug("onDestroy " + id);
         logger = null;
+        if (downloadDataTask != null) {
+            downloadDataTask.cancel(true);
+        }
         super.onDestroy();
     }
 
@@ -120,22 +152,38 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void onPastClick(View view) {
-        if (Build.VERSION.SDK_INT < 11) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
-                    getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            inText.setText(clipboard.getText());
-        } else {
-            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData primaryClip = clipboard.getPrimaryClip();
-            if (primaryClip != null && primaryClip.getItemCount() > 0) {
-                ClipData.Item item = primaryClip.getItemAt(0);
-                if (item != null) {
-                    inText.setText(item.getText());
+    private class ButtonPastClick implements View.OnClickListener {
+
+        public void onClick(View view) {
+            if (Build.VERSION.SDK_INT < 11) {
+                android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
+                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                inText.setText(clipboard.getText());
+            } else {
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData primaryClip = clipboard.getPrimaryClip();
+                if (primaryClip != null && primaryClip.getItemCount() > 0) {
+                    ClipData.Item item = primaryClip.getItemAt(0);
+                    if (item != null) {
+                        inText.setText(item.getText());
+                    }
                 }
             }
         }
     }
+
+    private class ButtonAddClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            EditText editText = (EditText) getActivity().findViewById(R.id.editTextInput);
+            String w = editText.getText().toString();
+            WordSQLHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
+            sqlHolder.insertInDB(w);
+            List<String> list = sqlHolder.getAllWords();
+            logger.debug("123123 LIST: " + list);
+        }
+    }
+
 
     private class ButtonClearClick implements View.OnClickListener {
 
@@ -149,18 +197,25 @@ public class MainFragment extends Fragment {
 
         @Override
         protected IWordsModel doInBackground(String... strings) {
-            IWordsModel wordsModel = new WordsModelFactory().createWordsModel();
+            IWordsModel wordsModel = new WordsModelByArray();
             wordsModel.initLogic(getActivity().getApplicationContext());
             return wordsModel;
         }
 
         @Override
         protected void onPostExecute(IWordsModel wordsModel) {
-            ((WordsFreqApplication) getActivity().getApplicationContext()).setWordsModel(wordsModel);
-            updateStatus();
-            String message = "onPostExecute. model is ready";
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
-            toast.show();
+            FragmentActivity activity = getActivity();
+            if (activity != null && activity.getApplicationContext() != null &&
+                    !activity.isFinishing() && downloadDataTask != null && !downloadDataTask.isCancelled()) {
+                ((WordsFreqApplication) activity.getApplicationContext()).setWordsModel(wordsModel);
+                updateStatus();
+                String message = "onPostExecute. model is ready";
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                logger.debug("123123 onPostExecute activity:  " + activity);
+            }
+
         }
     }
 }

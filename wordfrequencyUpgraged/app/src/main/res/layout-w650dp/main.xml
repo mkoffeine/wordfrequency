@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frame_with_fragment_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
--->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false">
 
+
     <fragment
         android:name="com.koffeine.wordfrequency2.fragment.MainFragment"
         android:id="@+id/main_fragment"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_weight="1"
+        android:layout_width="0dp" />
+
+    <fragment
+        android:name="com.koffeine.wordfrequency2.fragment.WordsListFragment"
+        android:id="@+id/list_fragment"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_width="0dp" />
 
 </LinearLayout>

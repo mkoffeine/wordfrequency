@@ -1,7 +1,6 @@
 package com.koffeine.wordfrequency2.model;
 
 import android.content.Context;
-import android.os.Build;
 
 import com.koffeine.wordfrequency2.Logger;
 
@@ -12,7 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 
-class WordsModelByArray extends AbstractWordsModel {
+public class WordsModelByArray extends AbstractWordsModel {
     private Logger logger = Logger.getLogger(WordsModelByArray.class.getSimpleName());
     private WordInfo[] wordsArray;
 
@@ -33,7 +32,7 @@ class WordsModelByArray extends AbstractWordsModel {
     }
 
     String getDictionaryFileName() {
-        return Build.VERSION.SDK_INT < 11 ? "en_full_raw_10.dic" : "en_full_raw_2.dic";
+        return "en_full_raw_50.dic";
     }
 
 

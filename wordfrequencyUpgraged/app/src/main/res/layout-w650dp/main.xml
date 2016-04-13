@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:baselineAligned="false">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:id="@+id/main_fragment_cont"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_width="0dp" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:id="@+id/list_fragment_cont"
         android:layout_height="match_parent"
         android:layout_weight="1"

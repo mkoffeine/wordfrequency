@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+
 
 /**
  * This is a simple framework for a test of an Application.  See
@@ -20,7 +23,12 @@ public class WordFreqActivityTest extends ActivityInstrumentationTestCase2<WordF
 
     private Activity activity;
     private EditText etInput;
-    private EditText etResult;
+    private TextView etResult;
+    private View btnClear;
+    private View btnCopy;
+    private View btnPast;
+
+    //    @TargetApi(8)
     public WordFreqActivityTest() {
         super("com.koffeine.wordfrequency2", WordFreqActivity.class);
     }
@@ -31,7 +39,10 @@ public class WordFreqActivityTest extends ActivityInstrumentationTestCase2<WordF
         super.setUp();
         activity = getActivity();
         etInput = (EditText) activity.findViewById(R.id.editTextInput);
-        etResult = (EditText) activity.findViewById(R.id.editTextResult);
+        etResult = (TextView) activity.findViewById(R.id.editTextResult);
+        btnClear = activity.findViewById(R.id.button_clear);
+        btnCopy = activity.findViewById(R.id.button_copy);
+        btnPast = activity.findViewById(R.id.button_past);
     }
     public void testControlsCreated() {
         assertNotNull(activity);
@@ -39,41 +50,41 @@ public class WordFreqActivityTest extends ActivityInstrumentationTestCase2<WordF
         assertNotNull(etResult);
     }
 
-    public void testApp() {
+    public void testClearBtn() {
         TouchUtils.tapView(this, etInput);
         sendKeys(KeyEvent.KEYCODE_A);
         sleep();
         sendKeys(KeyEvent.KEYCODE_B);
         sleep();
+        assertTrue(etInput.getText().toString().contains("ab"));
+        sleep();
+        TouchUtils.clickView(this, btnClear);
+        sleep();
+        assertTrue(etInput.getText().toString().equals(""));
+    }
+
+    public void testCopyPastBtn() {
+        TouchUtils.tapView(this, etInput);
         sendKeys(KeyEvent.KEYCODE_A);
         sleep();
-        sendKeys(KeyEvent.KEYCODE_N);
+        sendKeys(KeyEvent.KEYCODE_B);
         sleep();
+        TouchUtils.clickView(this, btnCopy);
         sleep();
-        sendKeys(KeyEvent.KEYCODE_D);
+        sendKeys(KeyEvent.KEYCODE_B);
         sleep();
-        sleep();
-        sleep();
-        sendKeys(KeyEvent.KEYCODE_O);
-        sleep();
-        sleep();
-        sleep();
-        sleep();
-        assertTrue(etResult.getText().toString().contains("abandon"));
-        sendKeys(KeyEvent.KEYCODE_N);
-        assertTrue(etResult.getText().toString().contains("abandon"));
-
+        TouchUtils.clickView(this, btnPast);
+        assertTrue(etInput.getText().toString().equals("ab"));
     }
+
     private void sleep() {
         WordsFreqApplication wordsFreqApplication = (WordsFreqApplication)activity.getApplicationContext();
         try {
             if (wordsFreqApplication.getWordsModel() == null) {
-                Thread.sleep(500);
+                Thread.sleep(300);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-
 }

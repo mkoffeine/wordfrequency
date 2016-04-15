@@ -23,9 +23,7 @@ import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.WordsModelByArray;
-import com.koffeine.wordfrequency2.model.dbsqlite.WordSQLHolder;
-
-import java.util.List;
+import com.koffeine.wordfrequency2.provider.WordSQLHolder;
 
 
 public class MainFragment extends Fragment {
@@ -51,6 +49,7 @@ public class MainFragment extends Fragment {
         }
         return inflate;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         inText = (EditText) getActivity().findViewById(R.id.editTextInput);
@@ -177,10 +176,10 @@ public class MainFragment extends Fragment {
         public void onClick(View v) {
             EditText editText = (EditText) getActivity().findViewById(R.id.editTextInput);
             String w = editText.getText().toString();
-            WordSQLHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
-            sqlHolder.insertInDB(w);
-            List<String> list = sqlHolder.getAllWords();
-            logger.debug("123123 LIST: " + list);
+            if (w.length() > 1) {
+                WordSQLHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
+                sqlHolder.insertInDB(w);
+            }
         }
     }
 

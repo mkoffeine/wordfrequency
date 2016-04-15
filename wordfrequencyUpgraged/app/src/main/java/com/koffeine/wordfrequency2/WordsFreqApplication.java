@@ -3,7 +3,7 @@ package com.koffeine.wordfrequency2;
 import android.app.Application;
 
 import com.koffeine.wordfrequency2.model.IWordsModel;
-import com.koffeine.wordfrequency2.model.dbsqlite.WordSQLHolder;
+import com.koffeine.wordfrequency2.provider.WordSQLHolder;
 
 
 public class WordsFreqApplication extends Application {
@@ -15,7 +15,6 @@ public class WordsFreqApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sqlHolder = new WordSQLHolder(getApplicationContext());
-        logger.debug("123123 WordsFreqApplication.onCreate");
     }
 
     public WordSQLHolder getSqlHolder() {

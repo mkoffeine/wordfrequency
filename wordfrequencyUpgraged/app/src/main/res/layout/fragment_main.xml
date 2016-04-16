@@ -25,6 +25,12 @@
             android:singleLine="true"
             android:layout_weight="4" />
 
+        <TextView
+            android:id="@+id/tx_translate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
         <Button
             android:id="@+id/button_clear"
             android:layout_width="wrap_content"

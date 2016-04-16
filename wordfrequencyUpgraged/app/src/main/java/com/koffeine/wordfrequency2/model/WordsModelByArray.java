@@ -32,7 +32,7 @@ public class WordsModelByArray extends AbstractWordsModel {
     }
 
     String getDictionaryFileName() {
-        return "en_full_raw_50.dic";
+        return "en_full_raw_20.dic";
     }
 
 

@@ -24,6 +24,7 @@ import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.WordsModelByArray;
 import com.koffeine.wordfrequency2.provider.WordSQLHolder;
+import com.koffeine.wordfrequency2.rest.Translate;
 
 
 public class MainFragment extends Fragment {
@@ -31,8 +32,10 @@ public class MainFragment extends Fragment {
     private String id = "";//Double.toString(Math.random());//"";
     private EditText inText;
     private TextView outText;
+    private TextView txTranslate;
     private String TEXT = "text";
     private DownloadDataTask downloadDataTask;
+    private TranslateTask translateTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,7 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_main, container, false);
         inText = (EditText) getActivity().findViewById(R.id.editTextInput);
+        txTranslate = (TextView) inflate.findViewById(R.id.tx_translate);
         if (savedInstanceState != null) {
             String text = savedInstanceState.getString(TEXT);
 
@@ -94,12 +98,25 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        logger.debug("onDestroy " + id);
-        logger = null;
+    public void onPause() {
+        cancelTranslationIfActive();
         if (downloadDataTask != null) {
             downloadDataTask.cancel(true);
         }
+        super.onPause();
+    }
+
+    private void cancelTranslationIfActive() {
+        if (translateTask != null) {
+            translateTask.cancel(true);
+            translateTask = null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        logger.debug("onDestroy " + id);
+        logger = null;
         super.onDestroy();
     }
 
@@ -116,6 +133,13 @@ public class MainFragment extends Fragment {
             status = getWordsModel().getStatus(s.toLowerCase().trim());
         }
         outText.setText(status);
+        cancelTranslationIfActive();
+        if (s.length() > 2) {
+            translateTask = new TranslateTask();
+            translateTask.execute(s);
+        } else {
+            txTranslate.setText("");
+        }
     }
 
 
@@ -215,6 +239,21 @@ public class MainFragment extends Fragment {
                 logger.debug("123123 onPostExecute activity:  " + activity);
             }
 
+        }
+    }
+
+    private class TranslateTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            return new Translate().translate(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String word) {
+            if (!isCancelled()) {
+                txTranslate.setText(word != null ? word : "");
+            }
         }
     }
 }

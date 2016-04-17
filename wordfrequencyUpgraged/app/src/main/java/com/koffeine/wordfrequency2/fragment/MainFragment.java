@@ -29,13 +29,14 @@ import com.koffeine.wordfrequency2.rest.Translate;
 
 public class MainFragment extends Fragment {
     private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
-    private String id = "";//Double.toString(Math.random());//"";
+    private String id = "";
     private EditText inText;
     private TextView outText;
     private TextView txTranslate;
     private String TEXT = "text";
     private DownloadDataTask downloadDataTask;
     private TranslateTask translateTask;
+    private Button btnOpenList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,8 +52,18 @@ public class MainFragment extends Fragment {
                 inText.setText(text);
             }
         }
+        btnOpenList = (Button) getActivity().findViewById(R.id.btn_open_list);
         return inflate;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (btnOpenList != null) {
+            btnOpenList.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -102,6 +113,9 @@ public class MainFragment extends Fragment {
         cancelTranslationIfActive();
         if (downloadDataTask != null) {
             downloadDataTask.cancel(true);
+        }
+        if (btnOpenList != null) {
+            btnOpenList.setVisibility(View.INVISIBLE);
         }
         super.onPause();
     }
@@ -215,6 +229,7 @@ public class MainFragment extends Fragment {
             inText.requestFocus();
         }
     }
+
 
     private class DownloadDataTask extends AsyncTask<String, Void, IWordsModel> {
 

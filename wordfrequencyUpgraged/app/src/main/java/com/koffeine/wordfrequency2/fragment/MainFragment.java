@@ -6,8 +6,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,21 +24,33 @@ import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
-import com.koffeine.wordfrequency2.model.WordsModelByArray;
+import com.koffeine.wordfrequency2.model.loader.WordsLoader;
 import com.koffeine.wordfrequency2.provider.WordSQLHolder;
 import com.koffeine.wordfrequency2.rest.Translate;
 
 
 public class MainFragment extends Fragment {
     private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
+    private static final int LOADER__ID = 1;
     private String id = "";
     private EditText inText;
     private TextView outText;
     private TextView txTranslate;
     private String TEXT = "text";
-    private DownloadDataTask downloadDataTask;
     private TranslateTask translateTask;
     private Button btnOpenList;
+
+    private Loader<IWordsModel> wordLoader;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (((WordsFreqApplication) getContext().getApplicationContext()).getWordsModel() == null) {
+            LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+            wordLoader = loaderManager.initLoader(LOADER__ID, null, new WordLoaderCallback());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +76,7 @@ public class MainFragment extends Fragment {
         if (btnOpenList != null) {
             btnOpenList.setVisibility(View.VISIBLE);
         }
+        updateStatus();
     }
 
 
@@ -82,10 +97,6 @@ public class MainFragment extends Fragment {
         inText = (EditText) getActivity().findViewById(R.id.editTextInput);
         inText.addTextChangedListener(new OnValueChanged());
         outText = (TextView) getActivity().findViewById(R.id.editTextResult);
-        if (getWordsModel() == null) {
-            downloadDataTask = new DownloadDataTask();
-            downloadDataTask.execute();
-        }
         logger.debug("Model: " + getWordsModel());
 
 
@@ -111,9 +122,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onPause() {
         cancelTranslationIfActive();
-        if (downloadDataTask != null) {
-            downloadDataTask.cancel(true);
-        }
         if (btnOpenList != null) {
             btnOpenList.setVisibility(View.INVISIBLE);
         }
@@ -230,33 +238,6 @@ public class MainFragment extends Fragment {
         }
     }
 
-
-    private class DownloadDataTask extends AsyncTask<String, Void, IWordsModel> {
-
-        @Override
-        protected IWordsModel doInBackground(String... strings) {
-            IWordsModel wordsModel = new WordsModelByArray();
-            wordsModel.initLogic(getActivity().getApplicationContext());
-            return wordsModel;
-        }
-
-        @Override
-        protected void onPostExecute(IWordsModel wordsModel) {
-            FragmentActivity activity = getActivity();
-            if (activity != null && activity.getApplicationContext() != null &&
-                    !activity.isFinishing() && downloadDataTask != null && !downloadDataTask.isCancelled()) {
-                ((WordsFreqApplication) activity.getApplicationContext()).setWordsModel(wordsModel);
-                updateStatus();
-                String message = "onPostExecute. model is ready";
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT);
-                toast.show();
-            } else {
-                logger.debug("123123 onPostExecute activity:  " + activity);
-            }
-
-        }
-    }
-
     private class TranslateTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -269,6 +250,34 @@ public class MainFragment extends Fragment {
             if (!isCancelled()) {
                 txTranslate.setText(word != null ? word : "");
             }
+        }
+    }
+
+    private class WordLoaderCallback implements LoaderManager.LoaderCallbacks<IWordsModel> {
+
+        @Override
+        public Loader<IWordsModel> onCreateLoader(int id, Bundle args) {
+            Loader<IWordsModel> loader = null;
+            if (id == LOADER__ID) {
+                loader = new WordsLoader(getContext().getApplicationContext());
+            }
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<IWordsModel> loader, IWordsModel data) {
+            ((WordsFreqApplication) getContext().getApplicationContext()).setWordsModel(data);
+            if (MainFragment.this.isAdded()) {
+                updateStatus();
+            }
+
+            String message = "onPostExecute. model is ready";
+            Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<IWordsModel> loader) {
         }
     }
 }

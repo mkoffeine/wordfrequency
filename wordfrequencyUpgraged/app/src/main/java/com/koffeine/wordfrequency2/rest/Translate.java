@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by mKoffeine on 16.04.2016.
  */
 public class Translate {
-    private Logger logger = Logger.getLogger(Translate.class.getSimpleName());
+    private Logger logger = Logger.getLogger();
     private static final String YA_TRANSLATE = "https://translate.yandex.net";
     private static final String KEY = "trnsl.1.1.20160416T120010Z.a482d3f664ee0dc1.8bbec4c111ae6c7ae6060abab76c39e82523fbb6";
     private Retrofit retrofit = new Retrofit.Builder()
@@ -24,6 +24,7 @@ public class Translate {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private TranslateService service = retrofit.create(TranslateService.class);
+    private Call<Object> call;
 
 
     public String translate(String word) {
@@ -32,7 +33,7 @@ public class Translate {
         mapToSend.put("key", KEY);
         mapToSend.put("lang", "en-uk");
         mapToSend.put("text", word);
-        Call<Object> call = service.translate(mapToSend);
+        call = service.translate(mapToSend);
 
         try {
             Response<Object> response = call.execute();
@@ -45,7 +46,7 @@ public class Translate {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.debug("Translation stopped cause: " + e.getMessage());
         }
         return res;
     }

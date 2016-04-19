@@ -24,5 +24,9 @@
             android:permission="com.koffeine.wordfrequency2.WordFreqProvider.READ"
             android:authorities="com.koffeine.wordfrequency2.WordFreqProvider"
             android:name=".provider.WordFreqProvider" />
+        <service
+            android:name=".service.TranslateIntentService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 </manifest>

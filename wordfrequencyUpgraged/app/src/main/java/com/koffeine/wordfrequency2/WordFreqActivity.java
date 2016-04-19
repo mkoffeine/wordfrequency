@@ -1,5 +1,6 @@
 package com.koffeine.wordfrequency2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +11,7 @@ import android.widget.Button;
 
 import com.koffeine.wordfrequency2.fragment.MainFragment;
 import com.koffeine.wordfrequency2.fragment.WordsListFragment;
+import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class WordFreqActivity extends FragmentActivity {
@@ -63,5 +65,17 @@ public class WordFreqActivity extends FragmentActivity {
             xact.addToBackStack(null);
             xact.commit();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == TranslateIntentService.TRANSLATE_MAIN_CODE) {
+//            String word = data.getStringExtra(TranslateIntentService.EXTRA_WORD);
+//            word = word !=null? word:"";
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAG_MAIN_TAG);
+            fragment.onActivityResult(requestCode, resultCode, data);
+//            ((MainFragment) fragment).setTxTranslate(word);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

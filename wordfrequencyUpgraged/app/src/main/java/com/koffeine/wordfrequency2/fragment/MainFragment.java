@@ -1,9 +1,10 @@
 package com.koffeine.wordfrequency2.fragment;
 
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +27,7 @@ import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.loader.WordsLoader;
 import com.koffeine.wordfrequency2.provider.WordSQLHolder;
-import com.koffeine.wordfrequency2.rest.Translate;
+import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class MainFragment extends Fragment {
@@ -37,7 +38,6 @@ public class MainFragment extends Fragment {
     private TextView outText;
     private TextView txTranslate;
     private String TEXT = "text";
-    private TranslateTask translateTask;
     private Button btnOpenList;
 
     private Loader<IWordsModel> wordLoader;
@@ -76,7 +76,6 @@ public class MainFragment extends Fragment {
         if (btnOpenList != null) {
             btnOpenList.setVisibility(View.VISIBLE);
         }
-        updateStatus();
     }
 
 
@@ -108,6 +107,7 @@ public class MainFragment extends Fragment {
         btnPast.setOnClickListener(new ButtonPastClick());
         Button btnAdd = (Button) getActivity().findViewById(R.id.button_add);
         btnAdd.setOnClickListener(new ButtonAddClick());
+        updateStatus();
     }
 
     @Override
@@ -121,18 +121,10 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onPause() {
-        cancelTranslationIfActive();
         if (btnOpenList != null) {
             btnOpenList.setVisibility(View.INVISIBLE);
         }
         super.onPause();
-    }
-
-    private void cancelTranslationIfActive() {
-        if (translateTask != null) {
-            translateTask.cancel(true);
-            translateTask = null;
-        }
     }
 
     @Override
@@ -155,15 +147,25 @@ public class MainFragment extends Fragment {
             status = getWordsModel().getStatus(s.toLowerCase().trim());
         }
         outText.setText(status);
-        cancelTranslationIfActive();
-        if (s.length() > 2) {
-            translateTask = new TranslateTask();
-            translateTask.execute(s);
-        } else {
+
+        PendingIntent pendingIntent = getActivity().createPendingResult(
+                TranslateIntentService.TRANSLATE_MAIN_CODE, new Intent(), 0);
+        Intent intent = new Intent(getActivity(), TranslateIntentService.class);
+        intent.putExtra(TranslateIntentService.EXTRA_PI, pendingIntent);
+        intent.putExtra(TranslateIntentService.EXTRA_WORD, s);
+        getContext().startService(intent);
+        if (s.length() <= 2) {
             txTranslate.setText("");
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == TranslateIntentService.TRANSLATE_MAIN_CODE) {
+            String word = data.getStringExtra(TranslateIntentService.EXTRA_WORD);
+            txTranslate.setText(word != null ? word : "");
+        }
+    }
 
     private class OnValueChanged implements TextWatcher {
 
@@ -238,20 +240,20 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private class TranslateTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            return new Translate().translate(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String word) {
-            if (!isCancelled()) {
-                txTranslate.setText(word != null ? word : "");
-            }
-        }
-    }
+//    private class TranslateTask extends AsyncTask<String, Void, String> {
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            return new Translate().translate(params[0]);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String word) {
+//            if (!isCancelled()) {
+//                txTranslate.setText(word != null ? word : "");
+//            }
+//        }
+//    }
 
     private class WordLoaderCallback implements LoaderManager.LoaderCallbacks<IWordsModel> {
 

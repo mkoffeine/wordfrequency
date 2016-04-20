@@ -1,24 +1,32 @@
 package com.koffeine.wordfrequency2.fragment;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.provider.WordSQLHelper;
 import com.koffeine.wordfrequency2.provider.WordSQLHolder;
+import com.koffeine.wordfrequency2.rest.Translate;
+
 
 public class WordsListFragment extends ListFragment {
-    private ArrayAdapter<String> adapter;
+
+    private static Handler handler;
+    private static int MESSAGE_TRANSLATE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,10 +51,16 @@ public class WordsListFragment extends ListFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getListView().setOnItemLongClickListener(new RemoveOnItemLongClickListener());
+        handler = new MyHandler(getContext().getApplicationContext());
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
         String text = ((TextView) v).getText().toString();
-        showNoticeDialog(text);
+        showToastTranslation(text);
     }
 
     public void showNoticeDialog(String word) {
@@ -59,6 +73,45 @@ public class WordsListFragment extends ListFragment {
         setTargetFragment(WordsListFragment.this, 1);
         dialog.show(getActivity().getSupportFragmentManager(), "AskDialog");
     }
+
+    private void showToastTranslation(final String word) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String res = new Translate().translate(word);
+                if (res != null) {
+                    Message.obtain(handler, MESSAGE_TRANSLATE, word + " : " + res).sendToTarget();
+                }
+            }
+        });
+        t.start();
+    }
+
+    private static class MyHandler extends Handler {
+        private Context context;
+
+        public MyHandler(Context context) {
+            this.context = context;
+        }
+
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == MESSAGE_TRANSLATE) {
+                if (msg.obj != null & msg.obj instanceof String) {
+                    Toast.makeText(context, (String) msg.obj, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private class RemoveOnItemLongClickListener implements AdapterView.OnItemLongClickListener {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            String text = ((TextView) view).getText().toString();
+            showNoticeDialog(text);
+            return true;
+        }
+    }
+
 
 
 

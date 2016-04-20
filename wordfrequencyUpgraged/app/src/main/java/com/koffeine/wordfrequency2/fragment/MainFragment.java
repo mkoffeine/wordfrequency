@@ -116,6 +116,8 @@ public class MainFragment extends Fragment {
         outText.setOnClickListener(null);
         outText = null;
         logger.debug("onStop " + id);
+        Intent intent = new Intent(getActivity(), TranslateIntentService.class);
+        getContext().stopService(intent);
         super.onStop();
     }
 

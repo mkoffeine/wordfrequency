@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,6 @@ import android.widget.Toast;
 
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.provider.WordSQLHelper;
-import com.koffeine.wordfrequency2.provider.WordSQLHolder;
 import com.koffeine.wordfrequency2.rest.Translate;
 
 
@@ -26,20 +28,17 @@ public class WordsListFragment extends ListFragment {
 
     private static Handler handler;
     private static int MESSAGE_TRANSLATE = 1;
+    private static int LOADER_CURSOR_ID = 2;
+    private SimpleCursorAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Cursor cursor = getActivity().getContentResolver()
-//                .query(WordFreqProvider.WORD_FREQ_CONTENT_URI, null, null, null, null);
-        WordSQLHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
-        Cursor cursor = sqlHolder.getAllWordCursor();
-        getActivity().startManagingCursor(cursor);
-
+        getActivity().getSupportLoaderManager().initLoader(LOADER_CURSOR_ID, null, new ListLoaderCallBack());
         String from[] = {WordSQLHelper.COLUMN_NAME};
         int to[] = {android.R.id.text1};
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1, cursor, from, to);
+        adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_1, null, from, to, 0);
 
         setListAdapter(adapter);
     }
@@ -111,10 +110,7 @@ public class WordsListFragment extends ListFragment {
         }
     }
 
-
-
-
-    /*  private static class WordsCursorLoader extends CursorLoader {
+    private static class WordsCursorLoader extends CursorLoader {
         public WordsCursorLoader(Context context) {
             super(context);
         }
@@ -124,5 +120,28 @@ public class WordsListFragment extends ListFragment {
             return ((WordsFreqApplication)getContext().getApplicationContext()).getSqlHolder().getAllWordCursor();
         }
 
-    }*/
+    }
+
+    private class ListLoaderCallBack implements LoaderManager.LoaderCallbacks<Cursor> {
+
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            Loader<Cursor> loader = null;
+            if (id == LOADER_CURSOR_ID) {
+                loader = new WordsCursorLoader(getContext().getApplicationContext());
+            }
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            adapter.changeCursor(data);
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+        }
+    }
+
 }

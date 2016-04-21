@@ -8,12 +8,12 @@ import android.database.Cursor;
 import com.koffeine.wordfrequency2.Logger;
 
 
-public class WordSQLHolder {
-    private Logger logger = Logger.getLogger(WordSQLHolder.class.getSimpleName());
+public class WordFreqProviderHolder {
+    private Logger logger = Logger.getLogger(WordFreqProviderHolder.class.getSimpleName());
     private Context context;
     private static final String WORD_WHERE_CLAUSE = WordSQLHelper.COLUMN_NAME + "=?";
 
-    public WordSQLHolder(Context context) {
+    public WordFreqProviderHolder(Context context) {
         this.context = context;
     }
 

@@ -26,7 +26,7 @@ import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.loader.WordsLoader;
-import com.koffeine.wordfrequency2.provider.WordSQLHolder;
+import com.koffeine.wordfrequency2.provider.WordFreqProviderHolder;
 import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
@@ -208,7 +208,7 @@ public class MainFragment extends Fragment {
             EditText editText = (EditText) getActivity().findViewById(R.id.editTextInput);
             String w = editText.getText().toString();
             if (w.length() > 1) {
-                WordSQLHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
+                WordFreqProviderHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
                 sqlHolder.insertInDB(w);
             }
         }

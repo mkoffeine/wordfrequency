@@ -37,7 +37,6 @@ public class MainFragment extends Fragment {
     private EditText inText;
     private TextView outText;
     private TextView txTranslate;
-    private String TEXT = "text";
     private Button btnOpenList;
 
     private Loader<IWordsModel> wordLoader;
@@ -59,13 +58,6 @@ public class MainFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_main, container, false);
         inText = (EditText) getActivity().findViewById(R.id.editTextInput);
         txTranslate = (TextView) inflate.findViewById(R.id.tx_translate);
-        if (savedInstanceState != null) {
-            String text = savedInstanceState.getString(TEXT);
-
-            if (text != null && inText != null) {
-                inText.setText(text);
-            }
-        }
         btnOpenList = (Button) getActivity().findViewById(R.id.btn_open_list);
         return inflate;
     }
@@ -76,17 +68,6 @@ public class MainFragment extends Fragment {
         if (btnOpenList != null) {
             btnOpenList.setVisibility(View.VISIBLE);
         }
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        inText = (EditText) getActivity().findViewById(R.id.editTextInput);
-        super.onSaveInstanceState(outState);
-        if (outState != null && inText != null) {
-            outState.putString(TEXT, inText.getText().toString());
-        }
-        logger.debug("123123 main fragment onSaveInstanceState " + outState);
     }
 
     @Override

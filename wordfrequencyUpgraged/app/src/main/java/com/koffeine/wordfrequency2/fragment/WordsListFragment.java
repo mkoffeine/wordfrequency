@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -80,7 +79,7 @@ public class WordsListFragment extends ListFragment {
             public void run() {
                 String res = new Translate().translate(word);
                 if (res != null) {
-                    Message.obtain(handler, MESSAGE_TRANSLATE, word + " : " + res).sendToTarget();
+                    handler.sendMessage(handler.obtainMessage(MESSAGE_TRANSLATE, word + " : " + res));
                 }
             }
         });
@@ -97,7 +96,7 @@ public class WordsListFragment extends ListFragment {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MESSAGE_TRANSLATE) {
                 if (msg.obj != null & msg.obj instanceof String) {
-                    Toast.makeText(context, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, (String) msg.obj, Toast.LENGTH_SHORT).show();
                 }
             }
         }

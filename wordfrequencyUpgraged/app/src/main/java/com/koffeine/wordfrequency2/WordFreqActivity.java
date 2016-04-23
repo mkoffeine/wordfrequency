@@ -14,7 +14,7 @@ import com.koffeine.wordfrequency2.fragment.WordsListFragment;
 import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
-public class WordFreqActivity extends FragmentActivity {
+public class WordFreqActivity extends FragmentActivity implements WordsListFragment.WordSelectedInList {
 
     private final static String FRAG_MAIN_TAG = "FRAG_MAIN_TAG";
     private final static String FRAG_LIST_TAG = "FRAG_LIST_TAG";
@@ -49,6 +49,14 @@ public class WordFreqActivity extends FragmentActivity {
         Button btnOpenList = (Button) findViewById(R.id.btn_open_list);
         if (btnOpenList != null) {
             btnOpenList.setOnClickListener(new ButtonOpenListClick());
+        }
+    }
+
+    @Override
+    public void wordSelectedInList(String word) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAG_MAIN_TAG);
+        if (fragment != null && fragment.isAdded()) {
+            ((MainFragment) fragment).setInputWord(word);
         }
     }
 

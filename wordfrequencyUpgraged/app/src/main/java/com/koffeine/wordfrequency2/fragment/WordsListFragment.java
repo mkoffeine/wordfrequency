@@ -30,16 +30,16 @@ public class WordsListFragment extends ListFragment {
     private static int MESSAGE_TRANSLATE = 1;
     private static int LOADER_CURSOR_ID = 2;
     private SimpleCursorAdapter adapter;
+    private WordSelectedInList attach;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getSupportLoaderManager().initLoader(LOADER_CURSOR_ID, null, new ListLoaderCallBack());
         String from[] = {WordSQLHelper.COLUMN_NAME};
         int to[] = {android.R.id.text1};
         adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
                 android.R.layout.simple_list_item_1, null, from, to, 0);
-
+        getActivity().getSupportLoaderManager().initLoader(LOADER_CURSOR_ID, null, new ListLoaderCallBack());
         setListAdapter(adapter);
     }
 
@@ -105,6 +105,7 @@ public class WordsListFragment extends ListFragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             String text = ((TextView) view).getText().toString();
+            attach.wordSelectedInList(text);
             showNoticeDialog(text);
             return true;
         }
@@ -144,4 +145,19 @@ public class WordsListFragment extends ListFragment {
         }
     }
 
+    public interface WordSelectedInList {
+        void wordSelectedInList(String word);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        attach = (WordSelectedInList) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        attach = null;
+    }
 }

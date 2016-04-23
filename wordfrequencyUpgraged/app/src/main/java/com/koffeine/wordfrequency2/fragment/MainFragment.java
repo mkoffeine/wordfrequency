@@ -150,6 +150,10 @@ public class MainFragment extends Fragment {
         }
     }
 
+    public void setInputWord(String word) {
+        inText.setText(word);
+    }
+
     private class OnValueChanged implements TextWatcher {
 
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

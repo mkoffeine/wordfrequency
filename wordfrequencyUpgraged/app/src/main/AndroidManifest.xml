@@ -5,28 +5,34 @@
     android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:name="com.koffeine.wordfrequency2.WordsFreqApplication"
+        android:name=".WordsFreqApplication"
+        android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:allowBackup="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="com.koffeine.wordfrequency2.WordFreqActivity"
+            android:name=".WordFreqActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:permission="com.koffeine.wordfrequency2.WordFreqProvider.READ"
+            android:name=".provider.WordFreqProvider"
             android:authorities="com.koffeine.wordfrequency2.WordFreqProvider"
-            android:name=".provider.WordFreqProvider" />
+            android:permission="com.koffeine.wordfrequency2.WordFreqProvider.READ" />
+
         <service
             android:name=".service.TranslateIntentService"
             android:enabled="true"
             android:exported="false" />
+
+        <activity android:name=".WordListActivity"></activity>
     </application>
+
 </manifest>

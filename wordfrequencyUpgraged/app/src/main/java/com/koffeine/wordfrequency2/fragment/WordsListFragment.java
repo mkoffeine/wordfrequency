@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.provider.WordSQLHelper;
 import com.koffeine.wordfrequency2.rest.Translate;
@@ -31,6 +33,7 @@ public class WordsListFragment extends ListFragment {
     private static int LOADER_CURSOR_ID = 2;
     private SimpleCursorAdapter adapter;
     private WordSelectedInList attach;
+    private Logger logger = Logger.getLogger(WordsListFragment.class.getSimpleName());
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,12 @@ public class WordsListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setEmptyText("Empty list");
     }
 
     @Override

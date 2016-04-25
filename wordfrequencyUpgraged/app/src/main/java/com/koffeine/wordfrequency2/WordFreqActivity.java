@@ -18,7 +18,6 @@ public class WordFreqActivity extends FragmentActivity implements WordsListFragm
 
     private final static String FRAG_MAIN_TAG = "FRAG_MAIN_TAG";
     private final static String FRAG_LIST_TAG = "FRAG_LIST_TAG";
-    private final static String FRAG_LIST_ON_MAIN_TAG = "FRAG_LIST_ON_MAIN_TAG";
     private static Logger logger = Logger.getLogger(WordFreqActivity.class.getSimpleName());
 
     /**
@@ -42,7 +41,18 @@ public class WordFreqActivity extends FragmentActivity implements WordsListFragm
         if (findViewById(R.id.list_fragment_cont) != null) {//2 fragment
             Fragment fragmentList = fragMgr.findFragmentByTag(FRAG_LIST_TAG);
             if (null == fragmentList) {
-                xact.add(R.id.list_fragment_cont, new WordsListFragment(), FRAG_LIST_TAG);
+                fragmentList = new WordsListFragment();
+                xact.add(R.id.list_fragment_cont, fragmentList, FRAG_LIST_TAG);
+
+            } else {
+                logger.debug("fragmentList != null 2 fragment : fragmentList.isAdded() :" + fragmentList.isAdded());
+            }
+
+        } else {
+            //todo remove?
+            Fragment fragmentList = fragMgr.findFragmentByTag(FRAG_LIST_TAG);
+            if (null != fragmentList) {
+                xact.remove(fragmentList);
             }
         }
         xact.commit();
@@ -63,26 +73,16 @@ public class WordFreqActivity extends FragmentActivity implements WordsListFragm
     private class ButtonOpenListClick implements View.OnClickListener {
 
         public void onClick(View view) {
-            FragmentManager fragMgr = getSupportFragmentManager();
-            FragmentTransaction xact = fragMgr.beginTransaction();
-            Fragment fragmentList = fragMgr.findFragmentByTag(FRAG_LIST_ON_MAIN_TAG);
-            if (fragmentList == null) {
-                fragmentList = new WordsListFragment();
-            }
-            xact.replace(R.id.main_fragment_cont, fragmentList, FRAG_LIST_ON_MAIN_TAG);
-            xact.addToBackStack(null);
-            xact.commit();
+            Intent intent = new Intent(getApplicationContext(), WordListActivity.class);
+            startActivity(intent);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TranslateIntentService.TRANSLATE_MAIN_CODE) {
-//            String word = data.getStringExtra(TranslateIntentService.EXTRA_WORD);
-//            word = word !=null? word:"";
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAG_MAIN_TAG);
             fragment.onActivityResult(requestCode, resultCode, data);
-//            ((MainFragment) fragment).setTxTranslate(word);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

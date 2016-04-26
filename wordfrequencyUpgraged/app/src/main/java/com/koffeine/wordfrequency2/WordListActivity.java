@@ -3,13 +3,12 @@ package com.koffeine.wordfrequency2;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.koffeine.wordfrequency2.fragment.WordsListFragment;
 
-public class WordListActivity extends FragmentActivity implements WordsListFragment.WordSelectedInList {
+public class WordListActivity extends AbstractActivity implements WordsListFragment.WordSelectedInList {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

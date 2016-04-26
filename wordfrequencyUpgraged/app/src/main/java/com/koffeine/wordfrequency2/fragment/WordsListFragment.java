@@ -40,7 +40,7 @@ public class WordsListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         String from[] = {WordSQLHelper.COLUMN_NAME};
         int to[] = {android.R.id.text1};
-        adapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+        adapter = new SimpleCursorAdapter(getActivity().getBaseContext(),
                 android.R.layout.simple_list_item_1, null, from, to, 0);
         getActivity().getSupportLoaderManager().initLoader(LOADER_CURSOR_ID, null, new ListLoaderCallBack());
         setListAdapter(adapter);

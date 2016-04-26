@@ -1,10 +1,12 @@
 package com.koffeine.wordfrequency2.service;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.koffeine.wordfrequency2.Logger;
@@ -42,6 +44,16 @@ public class TranslateIntentService extends Service {
         }
         logger.debug("onStartCommand word: " + word);
         return START_NOT_STICKY;
+    }
+
+    @NonNull
+    public static Intent createTranslationIntent(Activity activity, String s) {
+        PendingIntent pendingIntent = activity.createPendingResult(
+                TranslateIntentService.TRANSLATE_MAIN_CODE, new Intent(), 0);
+        Intent intent = new Intent(activity, TranslateIntentService.class);
+        intent.putExtra(TranslateIntentService.EXTRA_PI, pendingIntent);
+        intent.putExtra(TranslateIntentService.EXTRA_WORD, s);
+        return intent;
     }
 
     @Override

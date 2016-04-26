@@ -3,20 +3,21 @@ package com.koffeine.wordfrequency2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.koffeine.wordfrequency2.fragment.MainFragment;
 import com.koffeine.wordfrequency2.fragment.WordsListFragment;
 import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
-public class WordFreqActivity extends FragmentActivity implements WordsListFragment.WordSelectedInList {
+public class WordFreqActivity extends AbstractActivity implements WordsListFragment.WordSelectedInList {
 
-    private final static String FRAG_MAIN_TAG = "FRAG_MAIN_TAG";
+    public final static String FRAG_MAIN_TAG = "FRAG_MAIN_TAG";
     private final static String FRAG_LIST_TAG = "FRAG_LIST_TAG";
     private static Logger logger = Logger.getLogger(WordFreqActivity.class.getSimpleName());
 
@@ -85,5 +86,20 @@ public class WordFreqActivity extends FragmentActivity implements WordsListFragm
             fragment.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean res = super.onOptionsItemSelected(item);
+        if (isUseDictionary(getApplicationContext())) {
+            Fragment f = getSupportFragmentManager().findFragmentByTag(WordFreqActivity.FRAG_MAIN_TAG);
+            EditText et = (EditText) findViewById(R.id.editTextInput);
+            if (f != null && et != null) {
+
+                Intent intent = TranslateIntentService.createTranslationIntent(this, et.getText().toString());
+                startService(intent);
+            }
+        }
+        return res;
     }
 }

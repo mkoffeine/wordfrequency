@@ -1,6 +1,5 @@
 package com.koffeine.wordfrequency2.fragment;
 
-import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koffeine.wordfrequency2.AbstractActivity;
 import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
@@ -131,12 +131,12 @@ public class MainFragment extends Fragment {
         }
         outText.setText(status);
 
-        PendingIntent pendingIntent = getActivity().createPendingResult(
-                TranslateIntentService.TRANSLATE_MAIN_CODE, new Intent(), 0);
-        Intent intent = new Intent(getActivity(), TranslateIntentService.class);
-        intent.putExtra(TranslateIntentService.EXTRA_PI, pendingIntent);
-        intent.putExtra(TranslateIntentService.EXTRA_WORD, s);
-        getContext().startService(intent);
+        if (AbstractActivity.isUseDictionary(getActivity())) {
+            Intent intent = TranslateIntentService.createTranslationIntent(getActivity(), s);
+            getContext().startService(intent);
+        } else {
+            txTranslate.setText("");
+        }
         if (s.length() <= 2) {
             txTranslate.setText("");
         }

@@ -1,11 +1,16 @@
 package com.koffeine.wordfrequency2.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -27,11 +32,12 @@ import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.loader.WordsLoader;
 import com.koffeine.wordfrequency2.provider.WordFreqProviderHolder;
+import com.koffeine.wordfrequency2.service.BindService;
 import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class MainFragment extends Fragment {
-    private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
     private static final int LOADER__ID = 1;
     private String id = "";
     private EditText inText;
@@ -41,6 +47,7 @@ public class MainFragment extends Fragment {
 
     private Loader<IWordsModel> wordLoader;
 
+    MyBroadcastReceiver br;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +56,10 @@ public class MainFragment extends Fragment {
             LoaderManager loaderManager = getActivity().getSupportLoaderManager();
             wordLoader = loaderManager.initLoader(LOADER__ID, null, new WordLoaderCallback());
         }
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+
+        br = new MyBroadcastReceiver();
+        getActivity().registerReceiver(br, intFilt);
     }
 
     @Override
@@ -113,7 +124,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         logger.debug("onDestroy " + id);
-        logger = null;
+//        logger = null;
+        getActivity().unregisterReceiver(br);
         super.onDestroy();
     }
 
@@ -218,12 +230,43 @@ public class MainFragment extends Fragment {
         }
     }
 
+    boolean bound = false;
+    BindService myService;
+    ServiceConnection sConn;
 
     private class ButtonClearClick implements View.OnClickListener {
 
         public void onClick(View view) {
             inText.setText("");
             inText.requestFocus();
+
+            Intent intent = new Intent(getContext(), BindService.class);
+            if (sConn == null) {
+                sConn = new ServiceConnection() {
+
+                    public void onServiceConnected(ComponentName name, IBinder binder) {
+                        logger.debug("MainActivity onServiceConnected");
+                        myService = ((BindService.MyBinder) binder).getService();
+                        bound = true;
+                        Toast.makeText(getContext(), myService.test("test"), Toast.LENGTH_SHORT).show();
+                        ;
+                    }
+
+                    public void onServiceDisconnected(ComponentName name) {
+                        logger.debug("MainActivity onServiceDisconnected");
+                        myService = null;
+                        bound = false;
+                    }
+                };
+                getActivity().bindService(intent, sConn, Context.BIND_AUTO_CREATE);
+            } else {
+                if (myService != null) {
+                    Toast.makeText(getContext(), myService.test("qqq" + Math.random()), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "myService==NULL", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
     }
 
@@ -269,4 +312,19 @@ public class MainFragment extends Fragment {
         public void onLoaderReset(Loader<IWordsModel> loader) {
         }
     }
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+        public MyBroadcastReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            logger.debug("MyBroadcastReceiver " + context + "  " + intent);
+            String message = intent.getStringExtra("tr") + ">  from broadcastreceiver";
+            Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    public final static String BROADCAST_ACTION = "Translate_BROADCAST_ACTION";
 }

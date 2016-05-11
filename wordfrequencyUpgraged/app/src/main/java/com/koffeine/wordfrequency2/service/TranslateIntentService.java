@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.koffeine.wordfrequency2.Logger;
+import com.koffeine.wordfrequency2.fragment.MainFragment;
 import com.koffeine.wordfrequency2.rest.Translate;
 
 
@@ -82,6 +83,9 @@ public class TranslateIntentService extends Service {
                 Intent intent = new Intent().putExtra(EXTRA_WORD, word);
                 try {
                     pendingIntent.send(getApplicationContext(), TRANSLATE_MAIN_CODE, intent);
+                    Intent bi = new Intent(MainFragment.BROADCAST_ACTION);
+                    bi.putExtra("tr", word);
+                    sendBroadcast(bi);
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
@@ -91,4 +95,5 @@ public class TranslateIntentService extends Service {
             }
         }
     }
+
 }

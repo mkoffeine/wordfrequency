@@ -33,7 +33,7 @@ public class WordsListFragment extends ListFragment {
     private static int LOADER_CURSOR_ID = 2;
     private SimpleCursorAdapter adapter;
     private WordSelectedInList attach;
-    private Logger logger = Logger.getLogger(WordsListFragment.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(WordsListFragment.class.getSimpleName());
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class WordsListFragment extends ListFragment {
                 android.R.layout.simple_list_item_1, null, from, to, 0);
         getActivity().getSupportLoaderManager().initLoader(LOADER_CURSOR_ID, null, new ListLoaderCallBack());
         setListAdapter(adapter);
+        handler = new MyHandler(getContext().getApplicationContext());
     }
 
     @Override
@@ -61,7 +62,6 @@ public class WordsListFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         getListView().setOnItemLongClickListener(new RemoveOnItemLongClickListener());
-        handler = new MyHandler(getContext().getApplicationContext());
     }
 
     @Override

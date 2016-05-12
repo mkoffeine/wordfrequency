@@ -31,7 +31,7 @@ import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class MainFragment extends Fragment {
-    private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
     private static final int LOADER__ID = 1;
     private String id = "";
     private EditText inText;
@@ -113,7 +113,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         logger.debug("onDestroy " + id);
-        logger = null;
         super.onDestroy();
     }
 

@@ -6,6 +6,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -21,6 +24,8 @@ public class TranslateIntentService extends Service {
 
     private TranslateTask translateTask;
 
+    private Messenger messenger;
+
 
     @Override
     public void onCreate() {
@@ -28,10 +33,12 @@ public class TranslateIntentService extends Service {
         logger.debug("onCreate");
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String word = intent.getStringExtra(EXTRA_WORD);
         PendingIntent pendingIntent = intent.getParcelableExtra(EXTRA_PI);
+        messenger = intent.getParcelableExtra("ms");
         synchronized (this) {
             if (translateTask != null) {
                 translateTask.cancel(true);
@@ -85,6 +92,17 @@ public class TranslateIntentService extends Service {
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
+                if (messenger != null) {
+                    Message message = Message.obtain();
+                    message.what = 3;
+                    message.obj = "Service " + word;
+                    try {
+                        messenger.send(message);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 synchronized (TranslateIntentService.this) {
                     translateTask = null;
                 }

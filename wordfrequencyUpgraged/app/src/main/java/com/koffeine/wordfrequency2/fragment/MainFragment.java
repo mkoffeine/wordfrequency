@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -31,7 +33,7 @@ import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class MainFragment extends Fragment {
-    private Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
+    private static Logger logger = Logger.getLogger(MainFragment.class.getSimpleName());
     private static final int LOADER__ID = 1;
     private String id = "";
     private EditText inText;
@@ -40,6 +42,9 @@ public class MainFragment extends Fragment {
     private Button btnOpenList;
 
     private Loader<IWordsModel> wordLoader;
+    private Handler handler;
+    private Messenger messenger;
+    public static int MESSAGE_Service = 3;
 
 
     @Override
@@ -48,6 +53,28 @@ public class MainFragment extends Fragment {
         if (((WordsFreqApplication) getContext().getApplicationContext()).getWordsModel() == null) {
             LoaderManager loaderManager = getActivity().getSupportLoaderManager();
             wordLoader = loaderManager.initLoader(LOADER__ID, null, new WordLoaderCallback());
+        }
+        handler = new MyHandler(getContext().getApplicationContext());
+        messenger = new Messenger(handler);
+    }
+
+    private static class MyHandler extends Handler {
+        private Context context;
+
+        public MyHandler(Context context) {
+            this.context = context;
+        }
+
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 0) {
+                if (msg.obj != null & msg.obj instanceof String) {
+                    Toast.makeText(context, (String) msg.obj, Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (msg.what == MESSAGE_Service) {
+                Toast.makeText(context, (String) msg.obj + "MESSAGE_Service", Toast.LENGTH_SHORT).show();
+            }
+            logger.debug("handleMessage " + msg.obj);
         }
     }
 
@@ -113,7 +140,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onDestroy() {
         logger.debug("onDestroy " + id);
-        logger = null;
         super.onDestroy();
     }
 
@@ -133,7 +159,9 @@ public class MainFragment extends Fragment {
 
         if (AbstractActivity.isUseDictionary(getActivity())) {
             Intent intent = TranslateIntentService.createTranslationIntent(getActivity(), s);
+            intent.putExtra("ms", messenger);
             getContext().startService(intent);
+
         } else {
             txTranslate.setText("");
         }

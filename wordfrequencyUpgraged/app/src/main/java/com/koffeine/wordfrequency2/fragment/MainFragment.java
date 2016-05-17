@@ -1,5 +1,7 @@
 package com.koffeine.wordfrequency2.fragment;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.koffeine.wordfrequency2.AbstractActivity;
 import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.R;
+import com.koffeine.wordfrequency2.WordFreqActivity;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
 import com.koffeine.wordfrequency2.model.loader.WordsLoader;
@@ -201,6 +204,23 @@ public class MainFragment extends Fragment {
                         inText.setText(item.getText());
                     }
                 }
+
+                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(getContext(), WordFreqActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(
+                        getActivity().getApplicationContext(), 4, intent, 0);
+                long t = System.currentTimeMillis() + 7000;
+                alarmManager.set(AlarmManager.RTC, t, pendingIntent);
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+
+                pendingIntent = PendingIntent.getActivity(
+                        getActivity().getApplicationContext(), 5, sendIntent, 0);
+                t = System.currentTimeMillis() + 3000;
+                alarmManager.set(AlarmManager.RTC, t, pendingIntent);
             }
         }
     }

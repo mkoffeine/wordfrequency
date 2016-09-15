@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "com.koffeine.wordfrequency2"
-        minSdkVersion 7
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 24
 
         testApplicationId "com.koffeine.wordfrequency2.tests"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
@@ -21,13 +22,14 @@ android {
     }
 }
 dependencies {
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+
 
     testCompile 'org.robolectric:robolectric:3.0'
     androidTestCompile 'junit:junit:4.12'

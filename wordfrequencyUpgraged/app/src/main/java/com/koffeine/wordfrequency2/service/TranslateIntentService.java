@@ -10,7 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.koffeine.wordfrequency2.Logger;
+import com.koffeine.wordfrequency2.model.TranslatedWord;
 import com.koffeine.wordfrequency2.rest.Translate;
+
+import java.util.Date;
+
+import io.realm.Realm;
 
 
 public class TranslateIntentService extends Service {
@@ -73,7 +78,7 @@ public class TranslateIntentService extends Service {
         @Override
         protected String doInBackground(Object... params) {
             pendingIntent = (PendingIntent) params[1];
-            return new Translate().translate((String) params[0]);
+            return getTranslationAndCache((String) params[0]);
         }
 
         @Override
@@ -90,5 +95,29 @@ public class TranslateIntentService extends Service {
                 }
             }
         }
+    }
+
+    public static String getTranslationAndCache(String incomeWord) {
+        Realm realm = Realm.getDefaultInstance();
+        String translatedWord;
+        try {
+            TranslatedWord word = realm.where(TranslatedWord.class).equalTo("word", incomeWord).findFirst();
+            if (word != null) {
+                translatedWord = word.getTranslation();
+            } else {
+                translatedWord = new Translate().translate(incomeWord);
+                if (translatedWord != null) {
+                    realm.beginTransaction();
+                    word = realm.createObject(TranslatedWord.class);
+                    word.setWord(incomeWord);
+                    word.setTranslation(translatedWord);
+                    word.setAddingDate(new Date());
+                    realm.commitTransaction();
+                }
+            }
+        } finally {
+            realm.close();
+        }
+        return translatedWord;
     }
 }

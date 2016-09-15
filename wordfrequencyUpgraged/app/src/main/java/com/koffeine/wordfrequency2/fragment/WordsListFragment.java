@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.provider.WordSQLHelper;
-import com.koffeine.wordfrequency2.rest.Translate;
+import com.koffeine.wordfrequency2.service.TranslateIntentService;
 
 
 public class WordsListFragment extends ListFragment {
@@ -85,7 +85,7 @@ public class WordsListFragment extends ListFragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String res = new Translate().translate(word);
+                String res = TranslateIntentService.getTranslationAndCache(word);
                 if (res != null) {
                     handler.sendMessage(handler.obtainMessage(MESSAGE_TRANSLATE, word + " : " + res));
                 }

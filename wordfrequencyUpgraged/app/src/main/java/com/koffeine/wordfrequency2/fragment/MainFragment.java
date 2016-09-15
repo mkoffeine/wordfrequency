@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,9 +26,12 @@ import com.koffeine.wordfrequency2.Logger;
 import com.koffeine.wordfrequency2.R;
 import com.koffeine.wordfrequency2.WordsFreqApplication;
 import com.koffeine.wordfrequency2.model.IWordsModel;
+import com.koffeine.wordfrequency2.model.TranslatedWord;
 import com.koffeine.wordfrequency2.model.loader.WordsLoader;
 import com.koffeine.wordfrequency2.provider.WordFreqProviderHolder;
 import com.koffeine.wordfrequency2.service.TranslateIntentService;
+
+import io.realm.Realm;
 
 
 public class MainFragment extends Fragment {
@@ -223,8 +227,30 @@ public class MainFragment extends Fragment {
         public void onClick(View view) {
             inText.setText("");
             inText.requestFocus();
+
+            AsyncTask<Void, Void, Void> clearTask = new ClearTask();
+            clearTask.execute();
         }
     }
+    private class ClearTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final Realm realm = Realm.getDefaultInstance();
+            try {
+                int size = realm.where(TranslatedWord.class).findAll().size();
+                logger.debug("Clear task - size: " + size);
+                if (size > 1000) {
+                    realm.beginTransaction();
+                    realm.delete(TranslatedWord.class);
+                    realm.commitTransaction();
+                }
+            } finally {
+                realm.close();
+            }
+            return null;
+        }
+    };
+
 
 //    private class TranslateTask extends AsyncTask<String, Void, String> {
 //

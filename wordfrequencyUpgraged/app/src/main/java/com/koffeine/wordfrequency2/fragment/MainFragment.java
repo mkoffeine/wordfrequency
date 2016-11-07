@@ -1,5 +1,6 @@
 package com.koffeine.wordfrequency2.fragment;
 
+import android.app.SearchManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -59,11 +60,29 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inflate = inflater.inflate(R.layout.fragment_main, container, false);
-        inText = (EditText) getActivity().findViewById(R.id.editTextInput);
-        txTranslate = (TextView) inflate.findViewById(R.id.tx_translate);
-        btnOpenList = (Button) getActivity().findViewById(R.id.btn_open_list);
-        return inflate;
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        inText = (EditText) view.findViewById(R.id.editTextInput);
+        txTranslate = (TextView) view.findViewById(R.id.tx_translate);
+        btnOpenList = (Button) view.findViewById(R.id.btn_open_list);
+
+        inText = (EditText) view.findViewById(R.id.editTextInput);
+        inText.addTextChangedListener(new OnValueChanged());
+        outText = (TextView) view.findViewById(R.id.editTextResult);
+        logger.debug("Model: " + getWordsModel());
+
+        Button btnClipboard = (Button) view.findViewById(R.id.button_copy);
+        btnClipboard.setOnClickListener(new ButtonBufferClick());
+        Button btnClear = (Button) view.findViewById(R.id.button_clear);
+        btnClear.setOnClickListener(new ButtonClearClick());
+        Button btnPast = (Button) view.findViewById(R.id.button_past);
+        btnPast.setOnClickListener(new ButtonPastClick());
+        Button btnAdd = (Button) view.findViewById(R.id.button_add);
+        btnAdd.setOnClickListener(new ButtonAddClick());
+        updateStatus();
+        Button btnDict = (Button) view.findViewById(R.id.button_dict);
+        btnDict.setOnClickListener(new ButtonDictClick());
+
+        return view;
     }
 
     @Override
@@ -78,30 +97,12 @@ public class MainFragment extends Fragment {
     public void onStart() {
         super.onStart();
         logger.debug("onStart " + id);
-        inText = (EditText) getActivity().findViewById(R.id.editTextInput);
-        inText.addTextChangedListener(new OnValueChanged());
-        outText = (TextView) getActivity().findViewById(R.id.editTextResult);
-        logger.debug("Model: " + getWordsModel());
-
-
-        Button btnClipboard = (Button) getActivity().findViewById(R.id.button_copy);
-        btnClipboard.setOnClickListener(new ButtonBufferClick());
-        Button btnClear = (Button) getActivity().findViewById(R.id.button_clear);
-        btnClear.setOnClickListener(new ButtonClearClick());
-        Button btnPast = (Button) getActivity().findViewById(R.id.button_past);
-        btnPast.setOnClickListener(new ButtonPastClick());
-        Button btnAdd = (Button) getActivity().findViewById(R.id.button_add);
-        btnAdd.setOnClickListener(new ButtonAddClick());
-        updateStatus();
     }
 
     @Override
     public void onStop() {
-        inText.setOnClickListener(null);
-        outText.setOnClickListener(null);
-        outText = null;
         logger.debug("onStop " + id);
-        Intent intent = new Intent(getActivity(), TranslateIntentService.class);
+        Intent intent = new Intent(getContext(), TranslateIntentService.class);
         getContext().stopService(intent);
         super.onStop();
     }
@@ -121,7 +122,7 @@ public class MainFragment extends Fragment {
     }
 
     private IWordsModel getWordsModel() {
-        return ((WordsFreqApplication) getActivity().getApplicationContext()).getWordsModel();
+        return ((WordsFreqApplication) getContext().getApplicationContext()).getWordsModel();
     }
 
 
@@ -134,7 +135,7 @@ public class MainFragment extends Fragment {
         }
         outText.setText(status);
 
-        if (AbstractActivity.isUseDictionary(getActivity())) {
+        if (AbstractActivity.isUseDictionary(getContext())) {
             Intent intent = TranslateIntentService.createTranslationIntent(getActivity(), s);
             getContext().startService(intent);
         } else {
@@ -178,11 +179,11 @@ public class MainFragment extends Fragment {
         public void onClick(View view) {
             if (Build.VERSION.SDK_INT < 11) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(inText.getText().toString());
             } else {
                 ClipboardManager clipboard = (ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", inText.getText().toString());
                 clipboard.setPrimaryClip(clip);
             }
@@ -194,10 +195,10 @@ public class MainFragment extends Fragment {
         public void onClick(View view) {
             if (Build.VERSION.SDK_INT < 11) {
                 android.text.ClipboardManager clipboard = (android.text.ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 inText.setText(clipboard.getText());
             } else {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData primaryClip = clipboard.getPrimaryClip();
                 if (primaryClip != null && primaryClip.getItemCount() > 0) {
                     ClipData.Item item = primaryClip.getItemAt(0);
@@ -212,7 +213,7 @@ public class MainFragment extends Fragment {
     private class ButtonAddClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            EditText editText = (EditText) getActivity().findViewById(R.id.editTextInput);
+            EditText editText = (EditText) getView().findViewById(R.id.editTextInput);
             String w = editText.getText().toString();
             if (w.length() > 1) {
                 WordFreqProviderHolder sqlHolder = ((WordsFreqApplication) getActivity().getApplication()).getSqlHolder();
@@ -232,6 +233,22 @@ public class MainFragment extends Fragment {
             clearTask.execute();
         }
     }
+
+    private class ButtonDictClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent("colordict.intent.action.SEARCH");
+            EditText editText = (EditText) getView().findViewById(R.id.editTextInput);
+            String w = editText.getText().toString();
+            if (w.length() > 1) {
+                intent.putExtra(SearchManager.QUERY, w);
+                intent.putExtra("EXTRA_QUERY", w);
+                startActivity(intent);
+            }
+        }
+    }
+
     private class ClearTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
@@ -249,7 +266,7 @@ public class MainFragment extends Fragment {
             }
             return null;
         }
-    };
+    }
 
 
 //    private class TranslateTask extends AsyncTask<String, Void, String> {

@@ -37,6 +37,12 @@
             android:layout_height="wrap_content"
             android:text="X"
             android:layout_weight="0" />
+        <Button
+            android:id="@+id/button_dict"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dict"
+            android:layout_weight="0" />
 
     </LinearLayout>
 

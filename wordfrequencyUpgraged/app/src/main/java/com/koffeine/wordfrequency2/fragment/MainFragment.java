@@ -244,6 +244,7 @@ public class MainFragment extends Fragment {
             if (w.length() > 1) {
                 intent.putExtra(SearchManager.QUERY, w);
                 intent.putExtra("EXTRA_QUERY", w);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }
